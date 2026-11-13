@@ -3,110 +3,209 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#170d24">
-  <title>رسالة من القلب ♡</title>
+  <title>رسالة خاصة لآدم 💖</title>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap');
-    :root { --pink:#ff6f9f; --soft:#ffc1d5; --bg:#170d24; }
-    * { box-sizing:border-box; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
     body {
-      margin:0; min-height:100vh; display:grid; place-items:center; overflow:hidden;
-      font-family:'Cairo',Tahoma,sans-serif; color:#fff;
-      background: radial-gradient(ellipse at 50% 15%, #492044 0%, #24132f 42%, #100b1b 100%);
-      padding:24px;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #feada6 100%);
+      overflow: hidden;
+      position: relative;
+      transition: background 0.5s ease;
     }
-    .glow { position:fixed; width:340px; height:340px; border-radius:50%; filter:blur(90px); opacity:.22; pointer-events:none; }
-    .g1 { background:#ff4386; top:-150px; right:-100px; }
-    .g2 { background:#8b5cf6; bottom:-170px; left:-100px; }
+
+    /* خلفية القلوب المتحركة */
+    .bg-hearts {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .heart-bg {
+      position: absolute;
+      color: rgba(255, 255, 255, 0.4);
+      animation: float 6s infinite linear;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* كارت المحتوى */
     .card {
-      width:min(100%,470px); position:relative; text-align:center; padding:38px 27px 30px;
-      border:1px solid rgba(255,255,255,.14); border-radius:30px;
-      background:linear-gradient(145deg,rgba(255,255,255,.11),rgba(255,255,255,.045));
-      box-shadow:0 24px 80px rgba(0,0,0,.38); backdrop-filter:blur(16px);
-      animation:appear .8s ease both;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      padding: 40px 30px;
+      border-radius: 24px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+      text-align: center;
+      max-width: 420px;
+      width: 90%;
+      z-index: 10;
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      transition: all 0.3s ease;
     }
-    @keyframes appear { from {opacity:0;transform:translateY(18px) scale(.98)} to {opacity:1;transform:none} }
-    .heart-wrap { height:115px; display:grid; place-items:center; margin-bottom:7px; }
-    .heart { font-size:82px; color:var(--pink); line-height:1; display:inline-block; filter:drop-shadow(0 0 22px #ff4f8b88); animation:beat 1.5s infinite; }
-    @keyframes beat { 0%,100%{transform:scale(1)} 12%{transform:scale(1.12)} 24%{transform:scale(1)} 36%{transform:scale(1.08)} }
-    h1 { margin:4px 0 8px; font-size:clamp(25px,6vw,32px); font-weight:800; }
-    .sub { color:#d8c8df; margin:0 auto 25px; font-size:14px; line-height:1.9; }
-    label { display:block; text-align:right; margin:0 3px 8px; color:#f4dce8; font-size:14px; }
+
+    h1 {
+      color: #d63384;
+      font-size: 26px;
+      margin-bottom: 20px;
+      transition: color 0.3s ease;
+    }
+
+    .input-group {
+      margin-top: 20px;
+    }
+
     input {
-      width:100%; border:1px solid #ffffff2b; outline:none; border-radius:15px;
-      background:#120b1d99; color:#fff; padding:15px 17px; font:600 16px 'Cairo',sans-serif;
-      transition:.2s;
+      width: 100%;
+      padding: 14px 20px;
+      border: 2px solid #ffb6c1;
+      border-radius: 50px;
+      outline: none;
+      font-size: 18px;
+      text-align: center;
+      transition: all 0.3s ease;
     }
-    input::placeholder { color:#a99aaf; }
-    input:focus { border-color:var(--pink); box-shadow:0 0 0 4px #ff6f9f20; }
-    button {
-      width:100%; margin-top:13px; border:0; border-radius:15px; padding:14px;
-      color:#301323; font:800 16px 'Cairo',sans-serif; cursor:pointer;
-      background:linear-gradient(100deg,#ff9fbd,#ff6b9c); box-shadow:0 9px 25px #ff5d962e;
-      transition:transform .2s,filter .2s;
+
+    input:focus {
+      border-color: #d63384;
+      box-shadow: 0 0 12px rgba(214, 51, 132, 0.3);
     }
-    button:hover { transform:translateY(-2px); filter:brightness(1.06); }
-    button:active { transform:scale(.985); }
-    .response {
-      min-height:84px; margin-top:20px; padding:17px 12px; border-radius:17px;
-      display:grid; place-items:center; background:#ffffff0a; border:1px solid #ffffff12;
-      color:var(--soft); font-size:17px; font-weight:700; line-height:1.8;
-      opacity:0; transform:translateY(7px); transition:.3s;
+
+    /* وضع المقلب */
+    body.prank-mode {
+      background: #1a0003 !important;
     }
-    .response.show { opacity:1; transform:none; }
-    .response small { display:block; font-size:12px; font-weight:400; color:#c8b6d0; }
-    .footer { color:#9d8ca8; font-size:11px; margin-top:20px; }
-    .spark { position:fixed; color:#ff9fbd; opacity:.45; animation:float 7s ease-in-out infinite; pointer-events:none; }
-    .s1 { top:13%; left:13%; font-size:22px; } .s2 { top:24%; right:10%; font-size:16px; animation-delay:1s; }
-    .s3 { bottom:16%; right:15%; font-size:25px; animation-delay:2s; } .s4 { bottom:23%; left:9%; font-size:15px; animation-delay:3s; }
-    @keyframes float { 50%{transform:translateY(-17px) rotate(12deg);opacity:.8} }
-    @media(max-width:420px){ .card{padding:30px 20px 24px} }
+
+    .prank-card {
+      background: #ff003c !important;
+      color: #fff !important;
+      border-color: #ff0000 !important;
+      animation: shake 0.15s infinite;
+      box-shadow: 0 0 40px #ff003c !important;
+    }
+
+    .prank-card h1 {
+      color: #ffffff !important;
+      font-size: 32px !important;
+      font-weight: 900;
+      text-shadow: 2px 2px #000;
+    }
+
+    @keyframes shake {
+      0% { transform: translate(2px, 2px) rotate(0deg); }
+      20% { transform: translate(-3px, 0px) rotate(2deg); }
+      40% { transform: translate(1px, -1px) rotate(-1deg); }
+      60% { transform: translate(-2px, 2px) rotate(1deg); }
+      80% { transform: translate(3px, 1px) rotate(-2deg); }
+      100% { transform: translate(1px, -2px) rotate(0deg); }
+    }
+
+    /* وضع النتيجة النهائية */
+    .final-message {
+      display: none;
+      font-size: 24px;
+      color: #d63384;
+      font-weight: bold;
+      line-height: 1.6;
+      animation: fadeIn 0.8s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
+    }
   </style>
 </head>
 <body>
-  <div class="glow g1"></div><div class="glow g2"></div>
-  <span class="spark s1">✦</span><span class="spark s2">♡</span>
-  <span class="spark s3">✧</span><span class="spark s4">♡</span>
-  <main class="card">
-    <div class="heart-wrap"><div class="heart">♥</div></div>
-    <h1>فيه كلام من القلب 💗</h1>
-    <p class="sub">اكتب اللي في بالك… يمكن كلمة صغيرة تصلّح حاجات كتير.</p>
-    <form id="messageForm">
-      <label for="message">اكتب رسالتك هنا</label>
-      <input id="message" type="text" placeholder="اكتب: اسف" autocomplete="off" maxlength="120">
-      <button type="submit">إرسال الرسالة ♡</button>
-    </form>
-    <div class="response" id="response" aria-live="polite">
-      <span>اكتب رسالتك واضغط إرسال 💌</span>
+
+  <div class="bg-hearts" id="heartsContainer"></div>
+
+  <div class="card" id="mainCard">
+    <div id="step1">
+      <h1>يا آدم اكتب "اسف" هنا 💖</h1>
+      <div class="input-group">
+        <input type="text" id="userInput" placeholder="اكتب اسف هنا..." autocomplete="off">
+      </div>
     </div>
-    <div class="footer">صُنِع بحُب • رسالة صغيرة، ومعنى كبير</div>
-  </main>
+    
+    <div id="step2" class="final-message">
+      كنت بهزر معاك 😜<br>
+      وأنا كمان أسف وبحبك يا عم ❤️✨
+    </div>
+  </div>
+
   <script>
-    const form = document.getElementById('messageForm');
-    const input = document.getElementById('message');
-    const response = document.getElementById('response');
-
-    function normalizeArabic(value) {
-      return value.trim().replace(/[إأآٱ]/g, 'ا').replace(/ى/g, 'ي')
-        .replace(/[ًٌٍَُِّْـ]/g, '').replace(/\s+/g, ' ');
+    // إنشاء القلوب الخلفية
+    const heartsContainer = document.getElementById('heartsContainer');
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.classList.add('heart-bg');
+      heart.innerHTML = '❤️';
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+      heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+      heartsContainer.appendChild(heart);
+      setTimeout(() => heart.remove(), 6000);
     }
+    let heartInterval = setInterval(createHeart, 300);
 
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const message = normalizeArabic(input.value);
-      response.classList.remove('show');
+    // الاستماع لإدخال الكلمة
+    const input = document.getElementById('userInput');
+    const card = document.getElementById('mainCard');
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
 
-      let reply;
-      if (['اسف', 'انا اسف', 'اسفه', 'انا اسفه', 'آسف', 'آسفة'].includes(message)) {
-        reply = 'وأنا كمان آسف وبحبك ❤️<small>المهم إننا نفضل بخير مع بعض.</small>';
-      } else if (!message) {
-        reply = 'اكتب أي حاجة الأول، أنا مستني رسالتك 💌';
-      } else {
-        reply = 'وصلت رسالتك 💗<small>أحيانًا مجرد إننا نتكلم بيكون بداية جميلة.</small>';
+    input.addEventListener('input', function() {
+      const value = this.value.trim().toLowerCase();
+      
+      // التشيك على كلمة اسف
+      if (value === 'اسف' || value === 'آسف' || value === 'أسف') {
+        input.blur();
+        
+        // 1. تفعيل المقلب
+        document.body.classList.add('prank-mode');
+        card.classList.add('prank-card');
+        step1.querySelector('h1').innerText = "ضحكت عليك يا معرص 😈💥";
+        input.style.display = 'none';
+
+        // 2. بعد 1.8 ثانية: الصلح والرومانسية
+        setTimeout(() => {
+          document.body.classList.remove('prank-mode');
+          card.classList.remove('prank-card');
+          step1.style.display = 'none';
+          step2.style.display = 'block';
+
+          // مطر قلوب (Confetti)
+          confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: ['#ff4d6d', '#ff758f', '#ffb3c1']
+          });
+
+          // تسريع خلفية القلوب
+          clearInterval(heartInterval);
+          setInterval(createHeart, 100);
+
+        }, 1800);
       }
-
-      response.innerHTML = reply;
-      requestAnimationFrame(() => response.classList.add('show'));
     });
   </script>
 </body>
