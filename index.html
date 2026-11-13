@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#170d24">
+  <title>رسالة من القلب ♡</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap');
+    :root { --pink:#ff6f9f; --soft:#ffc1d5; --bg:#170d24; }
+    * { box-sizing:border-box; }
+    body {
+      margin:0; min-height:100vh; display:grid; place-items:center; overflow:hidden;
+      font-family:'Cairo',Tahoma,sans-serif; color:#fff;
+      background: radial-gradient(ellipse at 50% 15%, #492044 0%, #24132f 42%, #100b1b 100%);
+      padding:24px;
+    }
+    .glow { position:fixed; width:340px; height:340px; border-radius:50%; filter:blur(90px); opacity:.22; pointer-events:none; }
+    .g1 { background:#ff4386; top:-150px; right:-100px; }
+    .g2 { background:#8b5cf6; bottom:-170px; left:-100px; }
+    .card {
+      width:min(100%,470px); position:relative; text-align:center; padding:38px 27px 30px;
+      border:1px solid rgba(255,255,255,.14); border-radius:30px;
+      background:linear-gradient(145deg,rgba(255,255,255,.11),rgba(255,255,255,.045));
+      box-shadow:0 24px 80px rgba(0,0,0,.38); backdrop-filter:blur(16px);
+      animation:appear .8s ease both;
+    }
+    @keyframes appear { from {opacity:0;transform:translateY(18px) scale(.98)} to {opacity:1;transform:none} }
+    .heart-wrap { height:115px; display:grid; place-items:center; margin-bottom:7px; }
+    .heart { font-size:82px; color:var(--pink); line-height:1; display:inline-block; filter:drop-shadow(0 0 22px #ff4f8b88); animation:beat 1.5s infinite; }
+    @keyframes beat { 0%,100%{transform:scale(1)} 12%{transform:scale(1.12)} 24%{transform:scale(1)} 36%{transform:scale(1.08)} }
+    h1 { margin:4px 0 8px; font-size:clamp(25px,6vw,32px); font-weight:800; }
+    .sub { color:#d8c8df; margin:0 auto 25px; font-size:14px; line-height:1.9; }
+    label { display:block; text-align:right; margin:0 3px 8px; color:#f4dce8; font-size:14px; }
+    input {
+      width:100%; border:1px solid #ffffff2b; outline:none; border-radius:15px;
+      background:#120b1d99; color:#fff; padding:15px 17px; font:600 16px 'Cairo',sans-serif;
+      transition:.2s;
+    }
+    input::placeholder { color:#a99aaf; }
+    input:focus { border-color:var(--pink); box-shadow:0 0 0 4px #ff6f9f20; }
+    button {
+      width:100%; margin-top:13px; border:0; border-radius:15px; padding:14px;
+      color:#301323; font:800 16px 'Cairo',sans-serif; cursor:pointer;
+      background:linear-gradient(100deg,#ff9fbd,#ff6b9c); box-shadow:0 9px 25px #ff5d962e;
+      transition:transform .2s,filter .2s;
+    }
+    button:hover { transform:translateY(-2px); filter:brightness(1.06); }
+    button:active { transform:scale(.985); }
+    .response {
+      min-height:84px; margin-top:20px; padding:17px 12px; border-radius:17px;
+      display:grid; place-items:center; background:#ffffff0a; border:1px solid #ffffff12;
+      color:var(--soft); font-size:17px; font-weight:700; line-height:1.8;
+      opacity:0; transform:translateY(7px); transition:.3s;
+    }
+    .response.show { opacity:1; transform:none; }
+    .response small { display:block; font-size:12px; font-weight:400; color:#c8b6d0; }
+    .footer { color:#9d8ca8; font-size:11px; margin-top:20px; }
+    .spark { position:fixed; color:#ff9fbd; opacity:.45; animation:float 7s ease-in-out infinite; pointer-events:none; }
+    .s1 { top:13%; left:13%; font-size:22px; } .s2 { top:24%; right:10%; font-size:16px; animation-delay:1s; }
+    .s3 { bottom:16%; right:15%; font-size:25px; animation-delay:2s; } .s4 { bottom:23%; left:9%; font-size:15px; animation-delay:3s; }
+    @keyframes float { 50%{transform:translateY(-17px) rotate(12deg);opacity:.8} }
+    @media(max-width:420px){ .card{padding:30px 20px 24px} }
+  </style>
+</head>
+<body>
+  <div class="glow g1"></div><div class="glow g2"></div>
+  <span class="spark s1">✦</span><span class="spark s2">♡</span>
+  <span class="spark s3">✧</span><span class="spark s4">♡</span>
+  <main class="card">
+    <div class="heart-wrap"><div class="heart">♥</div></div>
+    <h1>فيه كلام من القلب 💗</h1>
+    <p class="sub">اكتب اللي في بالك… يمكن كلمة صغيرة تصلّح حاجات كتير.</p>
+    <form id="messageForm">
+      <label for="message">اكتب رسالتك هنا</label>
+      <input id="message" type="text" placeholder="اكتب: اسف" autocomplete="off" maxlength="120">
+      <button type="submit">إرسال الرسالة ♡</button>
+    </form>
+    <div class="response" id="response" aria-live="polite">
+      <span>اكتب رسالتك واضغط إرسال 💌</span>
+    </div>
+    <div class="footer">صُنِع بحُب • رسالة صغيرة، ومعنى كبير</div>
+  </main>
+  <script>
+    const form = document.getElementById('messageForm');
+    const input = document.getElementById('message');
+    const response = document.getElementById('response');
+
+    function normalizeArabic(value) {
+      return value.trim().replace(/[إأآٱ]/g, 'ا').replace(/ى/g, 'ي')
+        .replace(/[ًٌٍَُِّْـ]/g, '').replace(/\s+/g, ' ');
+    }
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const message = normalizeArabic(input.value);
+      response.classList.remove('show');
+
+      let reply;
+      if (['اسف', 'انا اسف', 'اسفه', 'انا اسفه', 'آسف', 'آسفة'].includes(message)) {
+        reply = 'وأنا كمان آسف وبحبك ❤️<small>المهم إننا نفضل بخير مع بعض.</small>';
+      } else if (!message) {
+        reply = 'اكتب أي حاجة الأول، أنا مستني رسالتك 💌';
+      } else {
+        reply = 'وصلت رسالتك 💗<small>أحيانًا مجرد إننا نتكلم بيكون بداية جميلة.</small>';
+      }
+
+      response.innerHTML = reply;
+      requestAnimationFrame(() => response.classList.add('show'));
+    });
+  </script>
+</body>
+</html>
